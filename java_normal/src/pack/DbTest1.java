@@ -10,7 +10,7 @@ public class DbTest1 {
 	private Statement statement = null;	// SQL문 실행 지원
 	private ResultSet resultset = null;	// SELECT 결과 접근 가능
 	// 생성자를 통한 연결
-	public DbTest1() {
+	public DbTest1() { // 각각의 연결 과정에 try문으로 오류를 잡아주는 것이 제일 좋다.
 		try { // Driver 파일 로딩
 		Class.forName("org.mariadb.jdbc.Driver");
 		}catch(Exception e) {System.out.println("로딩 실패 : "+e.getMessage()); return;}
@@ -33,13 +33,13 @@ public class DbTest1 {
 			String sql = "SELECT code, sang, su, dan FROM sangdata"; // 별명을 줘서 쓸수도 있다
 			resultset=statement.executeQuery(sql); // Java에서 SQL문 변수를 따로 만들어서 써도 똑같이 작동한다
 			// 읽어올때 컬럼의 이름이 SELECT 이후 순서대로 번호가 매겨져서 컬럼명 없이 번호만 써도 된다
-			while(resultset.next()) {
+			while(resultset.next()) { // 해당 자료를 첫 행부터 끝까지 모두 읽게함 
 				String code=resultset.getString("code");
 				String sangpum=resultset.getString("sang");
 				int su=resultset.getInt(3); // 3번째 순서가 sangdata 테이블의 su 컬럼 이라는 뜻이다
 				int dan=resultset.getInt("dan");
 				System.out.println(code+" "+sangpum+" "+su+" "+dan);
-				}	
+				}
 			sql = "SELECT COUNT(*) c FROM sangdata";
 			resultset=statement.executeQuery(sql);
 			resultset.next();
